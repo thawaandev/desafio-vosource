@@ -1,6 +1,7 @@
 package com.thawanlc.desafio.vosource.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,5 +44,9 @@ public class ProdutoService {
         }
 
         return ProdutoMapper.toResponse(produto);
+    }
+
+    public List<Produto> listarTodos() {
+        return produtoRepository.findAll();
     }
 }
