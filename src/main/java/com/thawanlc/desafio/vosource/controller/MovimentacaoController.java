@@ -22,19 +22,19 @@ import com.thawanlc.desafio.vosource.entity.enums.TipoMovimento;
 import com.thawanlc.desafio.vosource.service.MovimentacaoService;
 
 @RestController
-@RequestMapping("/api/movimentacao")
+@RequestMapping("/api/movs")
 public class MovimentacaoController {
     
     @Autowired private MovimentacaoService movimentacaoService;
 
-    @PostMapping
+    @PostMapping("/lancar")
     public ResponseEntity<MovimentacaoResponse> salvarMovimentacao(@RequestBody MovimentacaoRequest request) {
         movimentacaoService.lancarMovimentacao(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
     @GetMapping
-    public List<Movimentacao> buscarTodos() {
+    public List<MovimentacaoResponse> buscarTodos() {
         return movimentacaoService.buscarTodos();
     }
 

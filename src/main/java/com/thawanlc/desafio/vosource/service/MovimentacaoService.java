@@ -26,31 +26,35 @@ public class MovimentacaoService {
         Produto produto = produtoRepository.findById(request.produtoId())
             .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
+        Movimentacao movimentacao = MovimentacaoMapper.toEntity(request);
+
         if(request.tipoMovimento() == TipoMovimento.ENTRADA) {
             produto.setQuantidadeMinima(produto.getQuantidadeMinima() + request.quantidade());
+            movimentacao.setDocumento(TipoMovimento.ENTRADA);
         } else if(request.tipoMovimento() == TipoMovimento.SAIDA) {
             if(produto.getQuantidadeMinima() < request.quantidade()) {
                 throw new RuntimeException("Estoque insuficiente");
             }
             produto.setQuantidadeMinima(produto.getQuantidadeMinima() - request.quantidade());
+            movimentacao.setDocumento(TipoMovimento.SAIDA);
         }
 
-        Movimentacao movimentacao = MovimentacaoMapper.toEntity(request);
+        
         movimentacao.setProduto(produto);
         movimentacaoRepository.saveAndFlush(movimentacao);
         produtoRepository.saveAndFlush(produto);
         return MovimentacaoMapper.toResponse(movimentacao);
     }
 
-    public List<Movimentacao> buscarTodos() {
-        return movimentacaoRepository.findAll();
+    public List<MovimentacaoResponse> buscarTodos() {
+        return movimentacaoRepository.findAll().stream().map(MovimentacaoMapper::toResponse).toList();
     }
 
     public MovimentacaoResponse registrarAjuste(Long id, boolean isEntrada, MovimentacaoRequest update) {
         Movimentacao movimentacao = movimentacaoRepository.findById(id).orElseThrow(
             () -> new RecursoNaoEncontradoException("Movimentacao " + id + " não encontrado"));
-        
-        TipoMovimento tipo = isEntrada ? TipoMovimento.AJUSTE_ENTRADA : TipoMovimento.AJUSTE_SAIDA;
+
+        TipoMovimento tipo = isEntrada ? TipoMovimento.ENTRADA : TipoMovimento.SAIDA;
 
         if(movimentacao.getDocumento() != TipoMovimento.ENTRADA && movimentacao.getDocumento() != TipoMovimento.SAIDA) {
             throw new RecursoNaoEncontradoException("Somente uma alteraçao para cada movimentação");
@@ -64,7 +68,7 @@ public class MovimentacaoService {
 
 
     public List<Movimentacao> buscarPorProdutoEPeriodo(Long produtoId, LocalDateTime inicio, LocalDateTime fim) {
-        return movimentacaoRepository.findByProdutoIdAndDataMovimentacaoBetween(produtoId, inicio, fim);
+        return movimentacaoRepository.findByProdutoIdAndDataHoraBetween(produtoId, inicio, fim);
     }
 
     public List<Movimentacao> filtrarPorTipoMovimentacao(TipoMovimento tipoMovimento) {

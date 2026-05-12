@@ -29,7 +29,6 @@ public class MovimentacaoMapper {
         }
         if(update.descricao() != null) {
             movimentacao.setDescricao(update.descricao());
-            movimentacao.setDocumento(update.tipoMovimento());
         }
     }
 
@@ -38,6 +37,7 @@ public class MovimentacaoMapper {
         Movimentacao movimentacao = new Movimentacao();
         movimentacao.setTipoMovimento(request.tipoMovimento());
         movimentacao.setQuantidade(request.quantidade());
+        movimentacao.setDescricao(request.descricao());
         movimentacao.setDataHora(LocalDateTime.now());
         return movimentacao;
     }

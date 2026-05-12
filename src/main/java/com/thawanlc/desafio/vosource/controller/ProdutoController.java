@@ -16,7 +16,7 @@ import com.thawanlc.desafio.vosource.entity.Produto;
 import com.thawanlc.desafio.vosource.service.ProdutoService;
 
 @RestController
-@RequestMapping("/produtos")
+@RequestMapping("/api/produtos")
 public class ProdutoController {
 
     @Autowired private ProdutoService produtoService;

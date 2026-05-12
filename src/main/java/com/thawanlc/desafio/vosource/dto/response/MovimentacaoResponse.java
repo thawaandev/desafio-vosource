@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 import com.thawanlc.desafio.vosource.entity.enums.TipoMovimento;
 
 public record MovimentacaoResponse(
-    Long produtoId,
+    Long id,
     String produtoName,
-    TipoMovimento tipoMovimentacao,
+    TipoMovimento tipoMovimento,
     LocalDateTime dataHora,
     int quantidade,
     String descricao,

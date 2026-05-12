@@ -9,8 +9,8 @@ import com.thawanlc.desafio.vosource.entity.Movimentacao;
 
 public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long> {
     
-    boolean existsByProdutoIdAndDataMovimentacaoBetween(Long produtoId, LocalDateTime inicio, LocalDateTime fim);
+    boolean existsByProdutoIdAndDataHoraBetween(Long produtoId, LocalDateTime inicio, LocalDateTime fim);
 
-    List<Movimentacao> findByProdutoIdAndDataMovimentacaoBetween(Long produtoId, LocalDateTime inicio,LocalDateTime fim);
+    List<Movimentacao> findByProdutoIdAndDataHoraBetween(Long produtoId, LocalDateTime inicio,LocalDateTime fim);
 
 }
